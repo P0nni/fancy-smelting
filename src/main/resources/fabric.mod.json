@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "poney-fs",
+	"version": "${version}",
+	"name": "Fancy Smelting",
+	"description": "Dê um toque ardente à sua experiência no jogo com a adição desta incrível fornalha, alimentada pela energia imparável da lava e do bloco de magma. Esta primeira versão do mod oferece uma alternativa poderosa e duradoura às tradicionais fontes de combustível.",
+	"authors": [
+		"P0nni"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/poney-fs/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"poney.fs.FancySmelting"
+		],
+		"client": [
+			"poney.fs.FancySmeltingClient"
+		],
+		"fabric-datagen": [
+			"poney.fs.FancySmeltingDataGenerator"
+		]
+	},
+	"mixins": [
+		"poney-fs.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.3",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
