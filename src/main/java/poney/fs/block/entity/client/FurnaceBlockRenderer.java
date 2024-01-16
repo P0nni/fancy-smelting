@@ -23,25 +23,4 @@ public class FurnaceBlockRenderer extends GeoBlockRenderer<FurnaceEntity> {
         super(new FurnaceBlockModel());
     }
 
-    @Override
-    public void renderFinal(MatrixStack poseStack, FurnaceEntity animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
-        ItemStack stack = animatable.getRenderStack();
-        poseStack.push();
-        poseStack.translate(0.5f, 0.75f, 0.5f);
-        poseStack.scale(0.35f, 0.35f, 0.35f);
-        poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(270));
-
-        itemRenderer.renderItem(stack, ModelTransformationMode.GUI, getLightLevel(animatable.getWorld(),
-                animatable.getPos()), OverlayTexture.DEFAULT_UV, poseStack, bufferSource, animatable.getWorld(), 1);
-        poseStack.pop();
-
-        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
-    }
-
-    private int getLightLevel(World world, BlockPos pos) {
-        int bLight = world.getLightLevel(LightType.BLOCK, pos);
-        int sLight = world.getLightLevel(LightType.SKY, pos);
-        return LightmapTextureManager.pack(bLight, sLight);
-    }
 }

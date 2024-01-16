@@ -13,7 +13,7 @@ public class FsBlockEntities {
     public static BlockEntityType<FurnaceEntity> FURNACE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
             new Identifier(FancySmelting.ID, "furnace_block_entity"),
             FabricBlockEntityTypeBuilder.create(FurnaceEntity::new,FsBlocks.FURNACE_BLOCK
-                    ).build(null));
+                    ).build());
 
 
     public static void Initialize(){

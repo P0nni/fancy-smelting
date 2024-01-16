@@ -1,0 +1,7 @@
+{
+  "parent": "poney-fs:block/default_box",
+  "textures": {
+    "1": "poney-fs:block/furnace-fs",
+    "particle": "poney-fs:block/furnace-fs"
+  }
+}

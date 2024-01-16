@@ -7,37 +7,43 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTables;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
 import poney.fs.FancySmelting;
 import poney.fs.block.FsBlockEntities;
+
+import poney.fs.block.FsBlocks;
 import poney.fs.block.entity.FurnaceEntity;
 
-import java.awt.*;
 import java.util.List;
-
-import static net.minecraft.client.util.ParticleUtil.spawnParticles;
 
 public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider {
 
@@ -46,23 +52,23 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
     public static final BooleanProperty LIT = Properties.LIT;
     public static final IntProperty LIGHT = IntProperty.of("light",0,13);
     public static final EnumProperty<FurnaceFuel> FUEL = EnumProperty.of("fuel",FurnaceFuel.class);
-    public static final MapCodec<FurnaceBlock> CODEC = createCodec(FurnaceBlock::new);
     public FurnaceBlock(Settings settings) {
         super(settings);
     }
 
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return CODEC;
+        return null;
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return (BlockState)this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(new Property[]{FACING, LIT,FUEL,LIGHT});
     }
+
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
@@ -113,7 +119,7 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
                 }
 
             }
-            else if (screenHandlerFactory != null && !isEmptyFuel(state) ) {
+            else if (screenHandlerFactory != null ) {
                 player.openHandledScreen(screenHandlerFactory);
             }
         }
@@ -127,7 +133,7 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
             if(!FurnaceBlock.isEmptyFuel(state)){
                 if (random.nextFloat() < 0.11f) {
                     for (int i = 0; i < random.nextInt(2) + 2; ++i) {
-                        spawnParticles(world, pos,state);
+                        particlesAndSounds(world, pos,state);
                     }
                 }
             }
@@ -135,11 +141,20 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
         super.randomDisplayTick(state, world, pos, random);
     }
 
-    private void spawnParticles(World world,BlockPos pos,BlockState state){
+    private void particlesAndSounds(World world,BlockPos pos,BlockState state){
 
         Random random = world.getRandom();
+        double d = (double)pos.getX() + 0.5;
+        double e = pos.getY();
+        double f = (double)pos.getZ() + 0.5;
+
         if(isLit(state)){
             world.addImportantParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, (double)pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1), (double)pos.getY() + 1.8 + random.nextDouble() + random.nextDouble(), (double)pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1), 0.0, 0.07, 0.0);
+        }
+
+        if (random.nextDouble() < 0.1) {
+            SoundEvent fuelSound = isLit(state) ? SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE : SoundEvents.BLOCK_LAVA_POP ;
+            world.playSound(d, e, f, fuelSound, SoundCategory.BLOCKS, 1.0f, 1.0f, false);
         }
 
         DefaultParticleType fuelParticle = random.nextFloat() < 0.11 ? (random.nextFloat() < 0.11 ? ParticleTypes.FLAME : ParticleTypes.SMOKE) : null;
@@ -149,7 +164,6 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
     private double randomDouble(Random random){
         return  (random.nextFloat() * random.nextBetween(-1,1) )* 0.25;
     }
-
 
     @Nullable
     @Override
@@ -165,8 +179,9 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
                 ItemScatterer.spawn(world, pos, (FurnaceEntity)blockEntity);
                 world.updateComparators(pos,this);
             }
-            super.onStateReplaced(state, world, pos, newState, moved);
         }
+
+        super.onStateReplaced(state, world, pos, newState, moved);
     }
 
     @Nullable
@@ -179,9 +194,7 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
     public static Settings createFurnaceSettings() {
        return FabricBlockSettings.copyOf(Blocks.FURNACE)
                 .luminance(state -> state.get(LIGHT))
-                .nonOpaque()
-                .requiresTool()
-                .strength(4.0f);
+                .nonOpaque();
     }
 
     public static boolean isEmptyFuel(BlockState state){
@@ -207,7 +220,4 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
         world.updateListeners(pos,state,newState,3);
 
     }
-
-
-
 }

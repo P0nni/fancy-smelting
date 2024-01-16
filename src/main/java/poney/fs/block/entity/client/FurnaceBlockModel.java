@@ -45,7 +45,7 @@ public class FurnaceBlockModel extends GeoModel<FurnaceEntity> implements Clampe
 
     @Override
     public Identifier getAnimationResource(FurnaceEntity animatable) {
-        return new Identifier(FancySmelting.ID,"animations/block/furnace_fs.json");
+        return null;
     }
 
     @Override

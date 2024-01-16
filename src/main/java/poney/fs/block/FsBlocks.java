@@ -13,16 +13,10 @@ import poney.fs.block.custom.FurnaceBlock;
 
 public class FsBlocks {
 
-    public static final Block FURNACE_BLOCK = registerBlock("furnace_fs",ItemGroups.FUNCTIONAL,new FurnaceBlock(FurnaceBlock.createFurnaceSettings()));
+    public static final Block FURNACE_BLOCK = registerBlock("furnace_fs",new FurnaceBlock(FurnaceBlock.createFurnaceSettings()));
 
-    private static Block registerBlock(String name,RegistryKey<ItemGroup> group, Block block){
-        registerBlockItem(name, group,block);
+    private static Block registerBlock(String name, Block block){
         return Registry.register(Registries.BLOCK, new Identifier(FancySmelting.ID,name),block);
-    }
-
-    private static void registerBlockItem(String name, RegistryKey<ItemGroup> group, Block block){
-        Item item = Registry.register(Registries.ITEM, new Identifier(FancySmelting.ID,name),new BlockItem(block,new FabricItemSettings()));
-        ItemGroupEvents.modifyEntriesEvent(group).register(entries -> entries.add(item));
     }
 
     public static void Initialize(){

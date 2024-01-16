@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import poney.fs.block.FsBlocks;
 import poney.fs.block.FsBlockEntities;
+import poney.fs.block.FsItems;
 import poney.fs.gui.FsScreens;
 import poney.fs.gui.FurnaceScreenHandler;
 
@@ -24,6 +25,7 @@ public class FancySmelting implements ModInitializer {
 
 		FsBlocks.Initialize();
 		FsBlockEntities.Initialize();
+		FsItems.Initialize();
 		FsScreens.Initialize();
 
 	}
