@@ -16,7 +16,7 @@ import poney.fs.block.custom.FurnaceItem;
 
 public class FsItems {
 
-    public static final BlockItem FURNACE_ITEM = registerItem("furnace_fs", ItemGroups.FUNCTIONAL, new FurnaceItem(FsBlocks.FURNACE_BLOCK,new FabricItemSettings()));
+    public static final BlockItem FURNACE_ITEM = registerItem("furnace_fs_item", ItemGroups.FUNCTIONAL, new FurnaceItem(FsBlocks.FURNACE_BLOCK,new FabricItemSettings()));
 
     private static <I extends Item> I registerItem(String name, RegistryKey<ItemGroup> group, I item) {
         Identifier itemId = new Identifier(FancySmelting.ID, name);

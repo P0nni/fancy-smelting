@@ -5,6 +5,7 @@ import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.util.Identifier;
 import poney.fs.FancySmelting;
+import poney.fs.block.entity.client.FurnaceBlockItemModel;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -31,7 +32,7 @@ public class FurnaceItem extends BlockItem implements GeoItem {
             @Override
             public BuiltinModelItemRenderer getCustomRenderer() {
                 if(this.renderer == null)
-                    this.renderer = new GeoItemRenderer<>(new DefaultedBlockGeoModel<>(new Identifier(FancySmelting.ID, "furnace_fs")));
+                    this.renderer = new GeoItemRenderer<>(new FurnaceBlockItemModel());
 
                 return this.renderer;
             }

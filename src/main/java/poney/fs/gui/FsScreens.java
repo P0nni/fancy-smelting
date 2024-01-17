@@ -14,7 +14,7 @@ import poney.fs.FancySmelting;
 public class FsScreens {
 
     public static final ScreenHandlerType<FurnaceScreenHandler> FURNACE_SCREEN_HANDLER =
-            Registry.register(Registries.SCREEN_HANDLER, new Identifier(FancySmelting.ID, "furnace_fs"),
+            Registry.register(Registries.SCREEN_HANDLER, new Identifier(FancySmelting.ID, "furnace_fs_screen"),
                     new ExtendedScreenHandlerType<>(FurnaceScreenHandler::new));
 
 

@@ -1,6 +1,7 @@
 {
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
+  "textures": {"particle": "poney-fs:block/furnace_fs"},
   "texture_size": [
     96,
     96
@@ -56,9 +57,9 @@
     },
     "ground": {
       "scale": [
-        0.35,
-        0.35,
-        0.35
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "gui": {
