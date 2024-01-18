@@ -1,0 +1,7 @@
+{
+  "block.poney-fs.furnace_fs" : {
+    "name": "Fornalha",
+    "color": "orange"
+  },
+  "block.poney-fs.furnace_fs.tooltip" : "Funciona apenas com Magma e Lava."
+}

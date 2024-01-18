@@ -56,6 +56,7 @@ public class FurnaceEntity extends BlockEntity implements GeoBlockEntity, Extend
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
+    private Text customName;
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
     private int maxProgress = 72;
@@ -233,9 +234,13 @@ public class FurnaceEntity extends BlockEntity implements GeoBlockEntity, Extend
         return new FurnaceScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
+    public void setCustomName(Text customName){
+        this.customName = customName;
+    }
+
     @Override
     public Text getDisplayName() {
-        return Text.translatable("container.furnace");
+        return customName != null ? customName : getCachedState().getBlock().getName();
     }
 
     public ItemStack getRenderStack() {

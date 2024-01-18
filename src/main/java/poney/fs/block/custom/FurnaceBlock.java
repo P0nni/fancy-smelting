@@ -3,14 +3,17 @@ package poney.fs.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.enums.Instrument;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.*;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextParameterSet;
@@ -21,6 +24,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -33,6 +37,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.*;
@@ -40,25 +45,28 @@ import org.jetbrains.annotations.Nullable;
 import poney.fs.FancySmelting;
 import poney.fs.block.FsBlockEntities;
 
-import poney.fs.block.FsBlocks;
+import poney.fs.block.FsItems;
 import poney.fs.block.entity.FurnaceEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider {
 
+    public static final MapCodec<FurnaceBlock> CODEC = createCodec(FurnaceBlock::new);
     private static final VoxelShape SHAPE = Block.createCuboidShape(0,0,0,16,32,16);
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = Properties.LIT;
     public static final IntProperty LIGHT = IntProperty.of("light",0,13);
     public static final EnumProperty<FurnaceFuel> FUEL = EnumProperty.of("fuel",FurnaceFuel.class);
+
     public FurnaceBlock(Settings settings) {
         super(settings);
     }
 
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return null;
+        return CODEC;
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
@@ -172,16 +180,29 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof FurnaceEntity) {
-                ItemScatterer.spawn(world, pos, (FurnaceEntity)blockEntity);
-                world.updateComparators(pos,this);
-            }
+    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+        BlockEntity blockEntity;
+        if (itemStack.hasCustomName() && (blockEntity = world.getBlockEntity(pos)) instanceof FurnaceEntity) {
+            ((FurnaceEntity)blockEntity).setCustomName(itemStack.getName());
         }
+    }
 
-        super.onStateReplaced(state, world, pos, newState, moved);
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.isOf(newState.getBlock())) {
+            return;
+        }
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof FurnaceEntity) {
+            if (world instanceof ServerWorld) {
+                ItemScatterer.spawn(world, pos, (Inventory)((FurnaceEntity)blockEntity));
+                ((FurnaceEntity)blockEntity).getRecipesUsedAndDropExperience((ServerWorld)world, Vec3d.ofCenter(pos));
+            }
+            super.onStateReplaced(state, world, pos, newState, moved);
+            world.updateComparators(pos, this);
+        } else {
+            super.onStateReplaced(state, world, pos, newState, moved);
+        }
     }
 
     @Nullable
@@ -192,7 +213,10 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
     }
 
     public static Settings createFurnaceSettings() {
-       return FabricBlockSettings.copyOf(Blocks.FURNACE)
+       return Settings.copy(Blocks.STONE)
+               .strength(3.5f)
+               .requiresTool()
+               .sounds(BlockSoundGroup.STONE)
                 .luminance(state -> state.get(LIGHT))
                 .nonOpaque();
     }
@@ -218,6 +242,6 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
 
         world.setBlockState(pos,newState);
         world.updateListeners(pos,state,newState,3);
-
     }
+
 }

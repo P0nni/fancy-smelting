@@ -1,3 +1,4 @@
 {
-  "block.poney-fs.furnace_fs" : "Furnace"
+  "block.poney-fs.furnace_fs" : "Furnace",
+  "block.poney-fs.furnace_fs.tooltip" : "Work with Magma and Lava"
 }

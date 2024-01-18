@@ -14,6 +14,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.FurnaceOutputSlot;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import poney.fs.block.entity.FurnaceEntity;
 
@@ -113,6 +114,11 @@ public class FurnaceScreenHandler extends ScreenHandler {
             }
         }
     }
+
+    public Text getTitle(){
+        return blockEntity.getDisplayName();
+    }
+
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {

@@ -35,8 +35,15 @@ public class FurnaceScreen extends HandledScreen<FurnaceScreenHandler> {
 
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
+        renderTitle(context,x,y);
         renderProgressArrow(context, x, y);
         renderFuel(context,x,y);
+    }
+
+    private void renderTitle(DrawContext context, int x,int y){
+        Text customTitle = handler.getTitle();
+        int titleX = x + (this.backgroundWidth - this.textRenderer.getWidth(title)) / 2;
+        context.drawTextWithShadow(textRenderer,title,titleX,y+ 5,0xffffff);
     }
 
     private void renderProgressArrow(DrawContext context, int x, int y) {
@@ -52,7 +59,6 @@ public class FurnaceScreen extends HandledScreen<FurnaceScreenHandler> {
 
         context.drawTexture(TEXTURE, x + 20, y + 10 + differenceScale, 176, yOffset, 14, scaled);
     }
-
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
