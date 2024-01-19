@@ -39,6 +39,7 @@ import poney.fs.block.FsBlockEntities;
 import poney.fs.block.custom.FurnaceBlock;
 import poney.fs.block.custom.FurnaceFuel;
 import poney.fs.gui.FurnaceScreenHandler;
+import poney.fs.util.MathFS;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -61,6 +62,17 @@ public class FurnaceEntity extends BlockEntity implements GeoBlockEntity, Extend
     private int progress = 0;
     private int maxProgress = 72;
     private int timeFuel = 0;
+
+    public int ticks;
+    public float currentAngle;
+    public float nextAngle;
+    private int sector;
+    private boolean animating;
+    private float animationAngleStart;
+    private float animationAngleEnd;
+    private double startTicks;
+    private double playerAngle;
+
     public int maxTimefuel (){
         if(FurnaceBlock.isEmptyFuel(getCachedState())) return 0;
 
@@ -116,8 +128,55 @@ public class FurnaceEntity extends BlockEntity implements GeoBlockEntity, Extend
 
     public void tick(World world, BlockPos blockPos, BlockState blockState) {
         if(world.isClient()){
+            ++this.ticks;
+            if (isEmpty()) return;
+            PlayerEntity player = world.getClosestPlayer((double)getPos().getX() + 0.5D, (double)getPos().getY() + 0.5D, (double)getPos().getZ() + 0.5D, 3.0D, false);
+            if (player != null) {
+                double d0 = player.getX() - ((double)getPos().getX() + 0.5D);
+                double d1 = player.getZ() - ((double)getPos().getZ() + 0.5D);
+                this.playerAngle = (Math.atan2(-d0, -d1) + 3.9269908169872414D) % 6.283185307179586D;
+            }
+            // most animation code is taken from the old RealBench mod (https://www.curseforge.com/minecraft/mc-mods/realbench)
+            int sector = (int) (this.playerAngle * 2.0 / Math.PI);
+            if (this.sector != sector) {
+                this.animating = true;
+                this.animationAngleStart = this.currentAngle;
+                float delta1 = sector * 90.0F - this.currentAngle;
+                float abs1 = Math.abs(delta1);
+                float delta2 = delta1 + 360.0F;
+                float shift = Math.abs(delta2);
+                float delta3 = delta1 - 360.0F;
+                float abs3 = Math.abs(delta3);
+                if (abs3 < abs1 && abs3 < shift) {
+                    this.animationAngleEnd = delta3 + this.currentAngle;
+                } else if (shift < abs1 && shift < abs3) {
+                    this.animationAngleEnd = delta2 + this.currentAngle;
+                } else {
+                    this.animationAngleEnd = delta1 + this.currentAngle;
+                }
+                this.startTicks = this.ticks;
+                this.sector = sector;
+            }
+            if (this.animating) {
+                if (this.ticks >= this.startTicks + 20) {
+                    this.animating = false;
+                    this.currentAngle = this.nextAngle = (this.animationAngleEnd + 360.0F) % 360.0F;
+                } else {
+                    this.currentAngle = (MathFS.easeOutQuad(this.ticks - this.startTicks, this.animationAngleStart, this.animationAngleEnd - this.animationAngleStart, 20.0) + 360.0F) % 360.0F;
+                    this.nextAngle = (MathFS.easeOutQuad(Math.min(this.ticks + 1 - this.startTicks, 20), this.animationAngleStart, this.animationAngleEnd - this.animationAngleStart, 20.0) + 360.0F) % 360.0F;
+                    if (this.currentAngle != 0.0F || this.nextAngle != 0.0F) {
+                        if (this.currentAngle == 0.0F && this.nextAngle >= 180.0F) {
+                            this.currentAngle = 360.0F;
+                        }
+                        if (this.nextAngle == 0.0F && this.currentAngle >= 180.0F) {
+                            this.nextAngle = 360.0F;
+                        }
+                    }
+                }
+            }
             return;
         }
+
             if(!FurnaceBlock.isEmptyFuel(blockState)){
                 this.increaseTimeFuel();
                 if(timeFuel >= maxTimefuel()){
@@ -184,6 +243,9 @@ public class FurnaceEntity extends BlockEntity implements GeoBlockEntity, Extend
         Inventories.writeNbt(nbt, inventory);
         nbt.putInt("furnace_fs.progress", progress);
         nbt.putInt("furnace_fs.timeFuel", timeFuel);
+        NbtCompound nbtCompound = new NbtCompound();
+        recipesUsed.forEach((identifier, count) -> nbtCompound.putInt(identifier.toString(), (int)count));
+        nbt.put("RecipesUsed", nbtCompound);
     }
 
     @Override
@@ -193,6 +255,10 @@ public class FurnaceEntity extends BlockEntity implements GeoBlockEntity, Extend
         progress = nbt.getInt("furnace_fs.progress");
         timeFuel = nbt.getInt("furnace_fs.timeFuel");
 
+        NbtCompound nbtCompound = nbt.getCompound("RecipesUsed");
+        for (String string : nbtCompound.getKeys()) {
+            recipesUsed.put(new Identifier(string), nbtCompound.getInt(string));
+        }
     }
 
     public void dropExperienceForRecipesUsed(ServerPlayerEntity player) {
@@ -322,6 +388,12 @@ public class FurnaceEntity extends BlockEntity implements GeoBlockEntity, Extend
             this.recipesUsed.addTo(identifier, 1);
         }
     }
+
+    @Nullable
+    public RecipeEntry<?> getLastRecipe() {
+        return null;
+    }
+
 
     @Nullable
     @Override

@@ -38,7 +38,7 @@ public class FurnaceScreenHandler extends ScreenHandler {
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = ((FurnaceEntity) blockEntity);
 
-        this.addSlot(new Slot(furnaceInventory, 0, 56, 35));
+        this.addSlot(new FurnaceInputSlot(furnaceInventory, 0, 56, 35,blockEntity.getWorld()));
         this.addSlot(new FurnaceOutputSlot(playerInventory.player, furnaceInventory, 1, 116,35));
 
 
@@ -100,6 +100,12 @@ public class FurnaceScreenHandler extends ScreenHandler {
         }
 
         return newStack;
+    }
+
+    @Override
+    public void onClosed(PlayerEntity player) {
+        dropInventory(player,furnaceInventory);
+        super.onClosed(player);
     }
 
     @Override

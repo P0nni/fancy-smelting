@@ -37,6 +37,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
@@ -232,6 +233,7 @@ public class FurnaceBlock extends BlockWithEntity implements BlockEntityProvider
     public static FurnaceFuel getCurrentFuel(BlockState state){
         return state.get(FUEL);
     }
+    public static Direction getDirection(BlockState state){return state.get(FACING);}
 
     public static void changeProperties(World world, BlockPos pos, BlockState state,FurnaceFuel newFuel,boolean lit, int luminance){
         BlockState newState = state;

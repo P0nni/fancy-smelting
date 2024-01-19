@@ -1,5 +1,6 @@
 package poney.fs.gui;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -17,10 +18,8 @@ public class FurnaceInputSlot extends Slot {
 
     @Override
     public boolean canInsert(ItemStack stack) {
-        // Verifique se o item pode ser utilizado em uma receita de fusão
-        boolean validForSmelting = this.world != null && this.world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, inventory, this.world).isPresent();
-
-        // Permita a inserção se for válido para fusão, caso contrário, bloqueie
-        return validForSmelting;
+        SimpleInventory inv = new SimpleInventory(stack);
+        boolean validForSmelting = world != null && world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, inv, world).isPresent();
+        return validForSmelting && super.canInsert(stack);
     }
 }
