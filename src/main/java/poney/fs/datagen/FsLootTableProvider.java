@@ -13,7 +13,12 @@ public class FsLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        addDrop(FsBlocks.FURNACE_BLOCK);
+        addDrop(FsBlocks.FURNACE_STONE_BLOCK);
+        addDrop(FsBlocks.FURNACE_DIAMOND_BLOCK);
+        addDrop(FsBlocks.FURNACE_IRON_BLOCK);
+        addDrop(FsBlocks.FURNACE_GOLD_BLOCK);
+        addDrop(FsBlocks.FURNACE_NETHERITE_BLOCK);
+        addDrop(FsBlocks.FURNACE_EMERALD_BLOCK);
     }
 
 }

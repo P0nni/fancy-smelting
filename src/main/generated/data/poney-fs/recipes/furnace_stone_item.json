@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blackstone"
+    },
+    "F": {
+      "item": "minecraft:blackstone_slab"
+    },
+    "S": {
+      "item": "minecraft:blackstone_stairs"
+    },
+    "Y": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "pattern": [
+    " F ",
+    "S S",
+    "BYB"
+  ],
+  "result": {
+    "item": "poney-fs:furnace_stone_item"
+  }
+}

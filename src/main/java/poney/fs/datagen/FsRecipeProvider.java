@@ -7,8 +7,7 @@ import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.util.Identifier;
-import poney.fs.block.FsBlocks;
-import poney.fs.block.FsItems;
+import poney.fs.item.FsItems;
 
 public class FsRecipeProvider extends FabricRecipeProvider {
     public FsRecipeProvider(FabricDataOutput output) {
@@ -19,7 +18,7 @@ public class FsRecipeProvider extends FabricRecipeProvider {
     public void generate(RecipeExporter exporter) {
 
         ShapedRecipeJsonBuilder
-                .create(RecipeCategory.MISC, FsItems.FURNACE_ITEM,1)
+                .create(RecipeCategory.MISC, FsItems.FURNACE_STONE_ITEM,1)
                 .pattern(" F ")
                 .pattern("S S")
                 .pattern("BYB")
@@ -31,7 +30,7 @@ public class FsRecipeProvider extends FabricRecipeProvider {
                 .criterion(hasItem(Blocks.BLACKSTONE_SLAB),conditionsFromItem(Blocks.BLACKSTONE_SLAB))
                 .criterion(hasItem(Blocks.BLACKSTONE),conditionsFromItem(Blocks.BLACKSTONE))
                 .criterion(hasItem(Blocks.IRON_BARS),conditionsFromItem(Blocks.IRON_BARS))
-                .offerTo(exporter,new Identifier(getRecipeName(FsItems.FURNACE_ITEM)));
+                .offerTo(exporter,new Identifier(getRecipeName(FsItems.FURNACE_STONE_ITEM)));
 
     }
 }

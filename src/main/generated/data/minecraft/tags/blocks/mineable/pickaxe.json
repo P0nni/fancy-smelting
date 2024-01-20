@@ -1,6 +1,12 @@
 {
   "replace": false,
   "values": [
-    "poney-fs:furnace_fs"
+    "poney-fs:furnace_stone",
+    "poney-fs:furnace_diamond",
+    "poney-fs:furnace_copper",
+    "poney-fs:furnace_iron",
+    "poney-fs:furnace_gold",
+    "poney-fs:furnace_emerald",
+    "poney-fs:furnace_netherite"
   ]
 }

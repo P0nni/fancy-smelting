@@ -1,6 +1,5 @@
 package poney.fs.gui;
 
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,14 +14,13 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.FurnaceOutputSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
-import poney.fs.block.entity.FurnaceEntity;
+import poney.fs.block.entity.AbstractFurnaceFsEntity;
 
 public class FurnaceScreenHandler extends ScreenHandler {
 
     private final Inventory furnaceInventory;
     private final PropertyDelegate propertyDelegate;
-    public final FurnaceEntity blockEntity;
+    public final AbstractFurnaceFsEntity blockEntity;
 
     public FurnaceScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, inventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
@@ -36,7 +34,7 @@ public class FurnaceScreenHandler extends ScreenHandler {
         this.furnaceInventory = ((Inventory) blockEntity);
         furnaceInventory.onOpen(playerInventory.player);
         this.propertyDelegate = arrayPropertyDelegate;
-        this.blockEntity = ((FurnaceEntity) blockEntity);
+        this.blockEntity = ((AbstractFurnaceFsEntity) blockEntity);
 
         this.addSlot(new FurnaceInputSlot(furnaceInventory, 0, 56, 35,blockEntity.getWorld()));
         this.addSlot(new FurnaceOutputSlot(playerInventory.player, furnaceInventory, 1, 116,35));

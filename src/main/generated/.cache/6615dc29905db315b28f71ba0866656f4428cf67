@@ -1,2 +1,7 @@
-// 1.20.4	2024-01-18T19:06:09.1165669	Fancy Smelting/Block Loot Tables
-a93dd20de7ce9c001491487d2dbbcecc7d988074 data\poney-fs\loot_tables\blocks\furnace_fs.json
+// 1.20.4	2024-01-20T16:49:45.3879832	Fancy Smelting/Block Loot Tables
+4946c3e2bf8e2a72d3c419e7508d6bcf61a4ed68 data\poney-fs\loot_tables\blocks\furnace_diamond.json
+649bd53c63207d2d7c9aca51e81c1c79d664c999 data\poney-fs\loot_tables\blocks\furnace_gold.json
+2e5b24a604ec8a19275a6f3b73fd34d875a6e629 data\poney-fs\loot_tables\blocks\furnace_emerald.json
+0aaea12162265f45c745991dbf63e1eeedc624e9 data\poney-fs\loot_tables\blocks\furnace_netherite.json
+8f2d8345718c34b548420ecbb7ec521a68bed8bd data\poney-fs\loot_tables\blocks\furnace_iron.json
+ef2c2179d73ce0bff19e5366b3c5ac9cf52abd00 data\poney-fs\loot_tables\blocks\furnace_stone.json
