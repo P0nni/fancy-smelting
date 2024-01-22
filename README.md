@@ -2,35 +2,33 @@
 
 ![fs_logo](https://github.com/P0nni/fancy-smelting/assets/156830191/de642436-01e1-46d1-ab8a-76188d5f7105)
 
-O Fancy Smelting Mod é uma modificação para o Minecraft que traz uma fornalha que so usa lava e magma como combustivel, e estes combustiveis duram bem mais.
+The Fancy Smelting Mod is a modification for Minecraft that introduces a furnace using only lava and magma as fuel, and these fuels last much longer.
 
-## Recursos Principais
+## Main Features
 
-- Adiciona um novo bloco de fornalha: Furnace FS.
-- Integração com o sistema Geckolib para modelos personalizadas.
+- Adds a new furnace block: Furnace FS.
+- Integration with the Geckolib system for custom models.
 
-## Instalação
+## Installation
 
-1. Certifique-se de ter o Fabric Loader instalado.
-2. Certifique-se de ter instalado o FabricAPI e o GeckoLib
-3. Baixe o Fancy Smelting Mod.
-4. Coloque o arquivo JAR do mod na pasta `mods` do seu diretório Minecraft.
+1. Make sure you have Fabric Loader installed.
+2. Ensure that FabricAPI and GeckoLib are installed.
+3. Download the Fancy Smelting Mod.
+4. Place the mod's JAR file into the `mods` folder in your Minecraft directory.
 
 ## Crafting
 ![2024-01-18_20 39 45](https://github.com/P0nni/fancy-smelting/assets/156830191/6a0bc102-360d-4e7c-b02c-c119f456fdbc)
 
-## Contribuições
+## Contributions
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir problemas (issues) ou enviar pull requests.
+Contributions are welcome! Feel free to open issues or submit pull requests.
 
-## Licença
+## License
 
-Este mod é distribuído sob a [Licença MIT](LICENSE).
+This mod is distributed under the [MIT License](LICENSE).
 
 ---
 
-**Aproveite o Fancy Smelting Mod!**
+**Enjoy the Fancy Smelting Mod!**
 
 ![in-game](https://github.com/P0nni/fancy-smelting/assets/156830191/8478af0c-d2d7-42c1-a0d1-c7a7f89c6f4d)
-
- 
