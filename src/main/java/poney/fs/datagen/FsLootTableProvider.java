@@ -19,6 +19,7 @@ public class FsLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(FsBlocks.FURNACE_GOLD_BLOCK);
         addDrop(FsBlocks.FURNACE_NETHERITE_BLOCK);
         addDrop(FsBlocks.FURNACE_EMERALD_BLOCK);
+        addDrop(FsBlocks.FURNACE_COPPER_BLOCK);
     }
 
 }

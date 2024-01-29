@@ -29,4 +29,9 @@ public enum FurnaceLevel implements StringIdentifiable {
     public int asLevel() {
         return this.level;
     }
+
+    public int NextLevel(){
+        int next = this.ordinal() + 1;
+        return Math.min(next, 6);
+    }
 }

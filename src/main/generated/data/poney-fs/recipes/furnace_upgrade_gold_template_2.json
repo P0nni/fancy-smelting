@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "O": {
+      "item": "minecraft:gold_ingot"
+    },
+    "X": {
+      "item": "poney-fs:furnace_upgrade_template"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "OXO",
+    "OOO"
+  ],
+  "result": {
+    "item": "poney-fs:furnace_upgrade_gold_template"
+  }
+}

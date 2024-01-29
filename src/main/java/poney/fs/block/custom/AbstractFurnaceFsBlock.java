@@ -4,7 +4,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -35,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import poney.fs.FancySmelting;
 import poney.fs.block.FsBlockEntities;
 
+import poney.fs.block.FsBlocks;
 import poney.fs.block.entity.AbstractFurnaceFsEntity;
 import poney.fs.util.enums.FurnaceFuel;
 import poney.fs.util.enums.FurnaceLevel;
@@ -49,6 +49,8 @@ public abstract class AbstractFurnaceFsBlock extends BlockWithEntity implements 
     public static final IntProperty LIGHT = IntProperty.of("light",0,13);
     public static final EnumProperty<FurnaceFuel> FUEL = EnumProperty.of("fuel",FurnaceFuel.class);
     public static final EnumProperty<FurnaceLevel> LEVEL = EnumProperty.of("level",FurnaceLevel.class);
+
+    private boolean startUpgrade = false;
 
     public AbstractFurnaceFsBlock(Settings settings) {
         super(settings);
@@ -66,12 +68,6 @@ public abstract class AbstractFurnaceFsBlock extends BlockWithEntity implements 
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(new Property[]{FACING, LIT,FUEL,LIGHT,LEVEL});
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
-        tooltip.add(Text.translatable("block." + FancySmelting.ID + ".furnace_fs.tooltip"));
-        super.appendTooltip(stack, world, tooltip, options);
     }
 
     @Override
@@ -93,9 +89,16 @@ public abstract class AbstractFurnaceFsBlock extends BlockWithEntity implements 
         if (!world.isClient) {
 
             NamedScreenHandlerFactory screenHandlerFactory = ((AbstractFurnaceFsEntity) world.getBlockEntity(pos));
+            String pathItem = Registries.ITEM.getId(player.getStackInHand(hand).getItem()).getPath();
 
-            if(isEmptyFuel(state)){
-                String pathItem = Registries.ITEM.getId(player.getStackInHand(hand).getItem()).getPath();
+            if (pathItem.contains("upgrade") && pathItem.contains("furnace")) {
+                Block block = getNextFurnace(pathItem);
+                if(block != null) {
+                    if(!player.isCreative()) player.getStackInHand(hand).decrement(1);
+                    transformFor(block,state,world,pos,player);
+                }
+            }
+            else if(isEmptyFuel(state)){
                 if(pathItem.equals("lava_bucket")){
                    if(!player.isCreative()){
                        player.getStackInHand(hand).decrement(1);
@@ -116,8 +119,7 @@ public abstract class AbstractFurnaceFsBlock extends BlockWithEntity implements 
                     changeProperties(world,pos,state,FurnaceFuel.MAGMA,false,13);
                 }
 
-            }
-            else if (screenHandlerFactory != null ) {
+            } else if (screenHandlerFactory != null ) {
                 player.openHandledScreen(screenHandlerFactory);
             }
         }
@@ -163,7 +165,6 @@ public abstract class AbstractFurnaceFsBlock extends BlockWithEntity implements 
         return  (random.nextFloat() * random.nextBetween(-1,1) )* 0.25;
     }
 
-
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         BlockEntity blockEntity;
@@ -179,7 +180,7 @@ public abstract class AbstractFurnaceFsBlock extends BlockWithEntity implements 
         }
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof AbstractFurnaceFsEntity) {
-            if (world instanceof ServerWorld) {
+            if (world instanceof ServerWorld && !startUpgrade) {
                 ItemScatterer.spawn(world, pos, (Inventory)((AbstractFurnaceFsEntity)blockEntity));
                 ((AbstractFurnaceFsEntity)blockEntity).getRecipesUsedAndDropExperience((ServerWorld)world, Vec3d.ofCenter(pos));
             }
@@ -236,4 +237,54 @@ public abstract class AbstractFurnaceFsBlock extends BlockWithEntity implements 
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
     }
 
+    private Block getNextFurnace(String path){
+
+        if(path.contains("copper") && getFurnaceLevel() == FurnaceLevel.STONE)
+            return FsBlocks.FURNACE_COPPER_BLOCK;
+        else if(path.contains("iron") && getFurnaceLevel() == FurnaceLevel.COPPER)
+            return FsBlocks.FURNACE_IRON_BLOCK;
+        else if(path.contains("gold") && getFurnaceLevel() == FurnaceLevel.IRON)
+            return FsBlocks.FURNACE_GOLD_BLOCK;
+        else if(path.contains("diamond") && getFurnaceLevel() == FurnaceLevel.GOLD)
+            return FsBlocks.FURNACE_DIAMOND_BLOCK;
+        else if(path.contains("emerald")&& getFurnaceLevel() == FurnaceLevel.DIAMOND)
+            return FsBlocks.FURNACE_EMERALD_BLOCK;
+        else if(path.contains("netherite") && getFurnaceLevel() == FurnaceLevel.EMERALD)
+            return FsBlocks.FURNACE_NETHERITE_BLOCK;
+        else return null;
+    }
+
+    public void transformFor(Block newBlock,BlockState state,World world,BlockPos pos,PlayerEntity player){
+        startUpgrade = true;
+
+        BlockState transformedState = newBlock.getDefaultState()
+                .with(FUEL,state.get(FUEL))
+                .with(LIT,state.get(LIT))
+                .with(LIGHT,state.get(LIGHT))
+                .with(FACING, state.get(FACING));
+
+        System.out.println(state.getProperties());
+
+        Inventory inventory = getInventory(world, pos);
+        ItemStack[] inventoryContents = new ItemStack[inventory.size()];
+        for (int i = 0; i < inventoryContents.length; i++) {
+            inventoryContents[i] = inventory.getStack(i).copy();
+        }
+
+        // Substitui o bloco
+        world.setBlockState(pos, transformedState);
+
+        // Restaura o inventário no novo bloco
+        Inventory newInventory = getInventory(world, pos);
+        for (int i = 0; i < inventoryContents.length; i++) {
+            newInventory.setStack(i, inventoryContents[i]);
+        }
+
+        startUpgrade = false;
+    }
+
+    // Método auxiliar para obter o inventário associado a um bloco
+    private Inventory getInventory(World world, BlockPos pos) {
+        return (Inventory) world.getBlockEntity(pos);
+    }
 }

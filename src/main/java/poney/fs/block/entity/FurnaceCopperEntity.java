@@ -10,7 +10,6 @@ public class FurnaceCopperEntity extends AbstractFurnaceFsEntity{
         super(pos, state, FsBlockEntities.FURNACE_COPPER_BLOCK_ENTITY);
     }
 
-
     @Override
     public FurnaceLevel getFurnaceLevel() {
         return FurnaceLevel.COPPER;

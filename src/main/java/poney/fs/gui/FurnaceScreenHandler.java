@@ -39,25 +39,21 @@ public class FurnaceScreenHandler extends ScreenHandler {
         this.addSlot(new FurnaceInputSlot(furnaceInventory, 0, 56, 35,blockEntity.getWorld()));
         this.addSlot(new FurnaceOutputSlot(playerInventory.player, furnaceInventory, 1, 116,35));
 
-
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 
         addProperties(arrayPropertyDelegate);
     }
 
-
-
-    protected boolean isSmeltable(ItemStack itemStack) {
-        return blockEntity.getWorld().getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(itemStack), this.blockEntity.getWorld()).isPresent();
-    }
-
-
     public boolean isCrafting() {
         return propertyDelegate.get(0) > 0;
     }
 
-
+    public String getDaysRemaining(){
+        int time = propertyDelegate.get(2);
+        int maxtime = propertyDelegate.get(3);
+        return ((maxtime - time)/24000) + "";
+    }
 
     public int getScaledProgress() {
         int progress = this.propertyDelegate.get(0);
@@ -118,11 +114,6 @@ public class FurnaceScreenHandler extends ScreenHandler {
             }
         }
     }
-
-    public Text getTitle(){
-        return blockEntity.getDisplayName();
-    }
-
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {

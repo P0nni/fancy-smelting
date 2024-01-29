@@ -11,6 +11,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import poney.fs.FancySmelting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FurnaceScreen extends HandledScreen<FurnaceScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(FancySmelting.ID, "textures/gui/furnace_fs.png");
 
@@ -41,7 +44,6 @@ public class FurnaceScreen extends HandledScreen<FurnaceScreenHandler> {
     }
 
     private void renderTitle(DrawContext context, int x,int y){
-        Text customTitle = handler.getTitle();
         int titleX = x + (this.backgroundWidth - this.textRenderer.getWidth(title)) / 2;
         context.drawTextWithShadow(textRenderer,title,titleX,y+ 5,0xffffff);
     }

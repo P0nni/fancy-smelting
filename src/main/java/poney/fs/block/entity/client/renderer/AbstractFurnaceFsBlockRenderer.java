@@ -14,17 +14,17 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
 import poney.fs.block.custom.AbstractFurnaceFsBlock;
 import poney.fs.block.entity.AbstractFurnaceFsEntity;
-import poney.fs.block.entity.client.model.AbstractFurnaceFsBlockModel;
-import poney.fs.block.entity.client.renderer.layer.FurnaceLitRenderLayer;
+import poney.fs.block.entity.client.model.FurnaceFsBlockModel;
+import poney.fs.block.entity.client.renderer.layer.FurnaceLevelRenderLayer;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 
 public abstract class AbstractFurnaceFsBlockRenderer extends GeoBlockRenderer<AbstractFurnaceFsEntity> {
 
-    public AbstractFurnaceFsBlockRenderer(AbstractFurnaceFsBlockModel furnaceModel) {
+    public AbstractFurnaceFsBlockRenderer(FurnaceFsBlockModel furnaceModel) {
         super(furnaceModel);
-        addRenderLayer(new FurnaceLitRenderLayer(this));
+        addRenderLayer(new FurnaceLevelRenderLayer(this));
     }
 
     @Override

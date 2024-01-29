@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "O": {
+      "item": "minecraft:iron_ingot"
+    },
+    "X": {
+      "item": "poney-fs:furnace_upgrade_iron_template"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "OXO",
+    "OOO"
+  ],
+  "result": {
+    "count": 2,
+    "item": "poney-fs:furnace_upgrade_iron_template"
+  }
+}

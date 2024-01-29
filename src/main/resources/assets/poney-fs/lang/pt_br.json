@@ -1,7 +1,17 @@
 {
-  "block.poney-fs.furnace_fs" : {
-    "name": "Fornalha",
-    "color": "orange"
-  },
-  "block.poney-fs.furnace_fs.tooltip" : "Funciona apenas com Magma e Lava."
+  "block.poney-fs.furnace_stone": "Fornalha de Pedra",
+  "block.poney-fs.furnace_copper": "Fornalha de Cobre",
+  "block.poney-fs.furnace_iron": "Fornalha de Ferro",
+  "block.poney-fs.furnace_gold": "Fornalha de Ouro",
+  "block.poney-fs.furnace_diamond": "Fornalha de Diamante",
+  "block.poney-fs.furnace_emerald": "Fornalha de Esmeralda",
+  "block.poney-fs.furnace_netherite": "Fornalha de Netherita",
+  "item.poney-fs.furnace_upgrade_template": "Molde de Melhoria de Fornalha",
+  "item.poney-fs.furnace_upgrade_copper_template": "Melhoria de Fornalha em Cobre",
+  "item.poney-fs.furnace_upgrade_iron_template": "Melhoria de Fornalha em Ferro",
+  "item.poney-fs.furnace_upgrade_gold_template": "Melhoria de Fornalha em Ouro",
+  "item.poney-fs.furnace_upgrade_diamond_template": "Melhoria de Fornalha em Diamante",
+  "item.poney-fs.furnace_upgrade_emerald_template": "Melhoria de Fornalha em Esmeralda",
+  "item.poney-fs.furnace_upgrade_netherite_template": "Melhoria de Fornalha em Netherita",
+  "itemgroup.fs": "Fancy Smelting"
 }

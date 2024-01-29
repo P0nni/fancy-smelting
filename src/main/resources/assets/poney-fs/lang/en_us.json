@@ -1,4 +1,17 @@
 {
-  "block.poney-fs.furnace_stone" : "Furnace",
-  "block.poney-fs.furnace_fs.tooltip" : "Work with Magma and Lava"
+  "block.poney-fs.furnace_stone": "Stone Furnace",
+  "block.poney-fs.furnace_copper": "Copper Furnace",
+  "block.poney-fs.furnace_iron": "Iron Furnace",
+  "block.poney-fs.furnace_gold": "Gold Furnace",
+  "block.poney-fs.furnace_diamond": "Diamond Furnace",
+  "block.poney-fs.furnace_emerald": "Emerald Furnace",
+  "block.poney-fs.furnace_netherite": "Netherite Furnace",
+  "item.poney-fs.furnace_upgrade_template": "Furnace Upgrade Mold",
+  "item.poney-fs.furnace_upgrade_copper_template": "Copper Furnace Upgrade",
+  "item.poney-fs.furnace_upgrade_iron_template": "Iron Furnace Upgrade",
+  "item.poney-fs.furnace_upgrade_gold_template": "Gold Furnace Upgrade",
+  "item.poney-fs.furnace_upgrade_diamond_template": "Diamond Furnace Upgrade",
+  "item.poney-fs.furnace_upgrade_emerald_template": "Emerald Furnace Upgrade",
+  "item.poney-fs.furnace_upgrade_netherite_template": "Netherite Furnace Upgrade",
+  "itemgroup.fs": "Fancy Smelting"
 }

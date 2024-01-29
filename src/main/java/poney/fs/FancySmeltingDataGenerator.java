@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import poney.fs.datagen.FsBlockTagProvider;
 import poney.fs.datagen.FsLootTableProvider;
+import poney.fs.datagen.FsModelProvider;
 import poney.fs.datagen.FsRecipeProvider;
 
 public class FancySmeltingDataGenerator implements DataGeneratorEntrypoint {
@@ -15,5 +16,6 @@ public class FancySmeltingDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(FsBlockTagProvider::new);
 		pack.addProvider(FsRecipeProvider::new);
 		pack.addProvider(FsLootTableProvider::new);
+		pack.addProvider(FsModelProvider::new);
 	}
 }

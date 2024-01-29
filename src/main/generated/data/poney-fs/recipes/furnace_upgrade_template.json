@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "O": {
+      "item": "minecraft:copper_ingot"
+    },
+    "X": {
+      "item": "minecraft:paper"
+    },
+    "Y": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "OYO",
+    "YXY",
+    "OYO"
+  ],
+  "result": {
+    "item": "poney-fs:furnace_upgrade_template"
+  }
+}

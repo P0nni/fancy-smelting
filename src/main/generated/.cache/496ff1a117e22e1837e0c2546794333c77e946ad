@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-20T16:49:45.3859834	Fancy Smelting/Tags for minecraft:block
+// 1.20.4	2024-01-29T11:51:11.9977297	Fancy Smelting/Tags for minecraft:block
 3108a29f833c93b3ad93b8ad0b6be81395735998 data\minecraft\tags\blocks\mineable\pickaxe.json
-72d37630a11c87c829064df0f66e266886470003 data\minecraft\tags\blocks\needs_iron_tool.json
 b903fd3e8e31071005381914cc0c2378d4d2de5e data\minecraft\tags\blocks\needs_diamond_tool.json
+72d37630a11c87c829064df0f66e266886470003 data\minecraft\tags\blocks\needs_iron_tool.json
